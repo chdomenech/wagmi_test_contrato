@@ -1,0 +1,21 @@
+{
+  "name": "pepebravo",
+  "private": true,
+  "version": "2.6.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 8080"
+  },
+  "dependencies": {
+    "@wagmi/core": "^1.4.2",
+    "@walletconnect/modal-auth-html": "2.6.1",
+    "@web3modal/wagmi": "^3.0.2",
+    "sweetalert2": "^11.7.31",
+    "viem": "^1.13.1"
+  },
+  "devDependencies": {
+    "vite": "4.3.9"
+  }
+}
