@@ -1,6 +1,6 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
 import { getAccount, writeContract, readContract, fetchBalance, waitForTransaction, disconnect, watchAccount, switchNetwork, getNetwork } from '@wagmi/core';
-import { bscTestnet } from '@wagmi/core/chains';
+import { bsc } from '@wagmi/core/chains';
 import Swal from 'sweetalert2';
 
 // Manipulando el DOM
@@ -41,7 +41,7 @@ const metadata = {
 }
 
 // Cadena de BSC testnet
-const chains = [bscTestnet]
+const chains = [bsc]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
 // 3. Create modal
