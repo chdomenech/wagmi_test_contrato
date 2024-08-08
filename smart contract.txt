@@ -1,0 +1,34 @@
+El fragmento de código que has compartido es parte de un contrato inteligente escrito en Solidity, proveniente de la biblioteca OpenZeppelin. En concreto, se trata del contrato ReentrancyGuard, el cual está diseñado para prevenir ataques de reentrancy.
+
+Conceptos Clave:
+Reentrancy: Este es un tipo de vulnerabilidad en contratos inteligentes donde una función de un contrato es llamada recursivamente antes de que la ejecución de la función inicial haya finalizado. Esto puede llevar a comportamientos inesperados o a la extracción de fondos de manera no autorizada.
+
+ReentrancyGuard: Este es un módulo que se puede heredar en otros contratos para proteger funciones específicas contra reentrancy. Esto se logra a través del uso de un modificador llamado nonReentrant.
+
+Modificador nonReentrant:
+
+Este modificador se aplica a funciones para asegurarse de que no pueden ser llamadas recursivamente.
+Funciona utilizando una variable de estado _status que indica si la función ya ha sido ingresada (_ENTERED) o no (_NOT_ENTERED).
+Cuando una función con este modificador es llamada, se establece _status a _ENTERED. Si durante la ejecución de la función se intenta volver a entrar (llamarla de nuevo antes de que finalice), la ejecución fallará debido al require que chequea si _status ya es _ENTERED.
+Al finalizar la ejecución de la función, _status se restablece a _NOT_ENTERED, permitiendo llamadas futuras.
+Uso de Constantes:
+
+_NOT_ENTERED y _ENTERED son constantes que representan los dos estados posibles del modificador de reentrancy.
+Este diseño ayuda a reducir el costo de las transacciones mediante la optimización de los reembolsos de gas.
+Ejemplo de Uso:
+Si tienes un contrato que maneja fondos o ejecuta operaciones críticas, puedes heredar de ReentrancyGuard y aplicar el modificador nonReentrant a funciones que puedan ser vulnerables a reentrancy. Por ejemplo:
+
+solidity
+Copiar código
+contract MySecureContract is ReentrancyGuard {
+    mapping(address => uint256) private _balances;
+
+    function withdraw(uint256 amount) external nonReentrant {
+        require(_balances[msg.sender] >= amount, "Insufficient balance");
+
+        _balances[msg.sender] -= amount;
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Transfer failed");
+    }
+}
+En este ejemplo, la función withdraw utiliza el modificador nonReentrant para protegerse de un ataque de reentrancy, asegurándose de que no pueda ser llamada recursivamente mientras se ejecuta.
